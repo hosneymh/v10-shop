@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SiteController extends Controller
 {
@@ -39,5 +40,22 @@ class SiteController extends Controller
     public function contact()
     {
         return view('site.contact');
+    }
+    public function review(Request $request , $id)
+    {
+
+        $request->validate([
+            'rating' => 'required',
+            'review' => 'required'
+        ]);
+        dd($request->all() );
+
+        Review::create([
+            'star'=> $request->rating ,
+            'content'=> $request->review ,
+            'product_id'=> $id ,
+            'user_id'=> Auth::id()
+        ]);
+        return redirect()->back();
     }
 }

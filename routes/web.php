@@ -23,6 +23,8 @@ Route::prefix(LaravelLocalization::setLocale())->group(function() {
     Route::get('/product',[SiteController::class,'shop'])->name('site.shop');
     Route::get('/product_detail/{id}',[SiteController::class,'product_detail'])->name('site.product_detail');
     Route::get('/contact',[SiteController::class,'contact'])->name('site.contact');
+    Route::post('/product_detail/{id}/review',[SiteController::class,'review'])->name('site.review');
+
 
     // Auth::routes(['register' => false]);
     Auth::routes(['verify' => true]);
