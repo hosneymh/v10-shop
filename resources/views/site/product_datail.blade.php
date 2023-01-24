@@ -230,9 +230,9 @@ h1 { font-size: 1.5em; margin: 10px; }
                                                     Your Rating
                                                 </span>
 
-                                                <span class="wrap-rating fs-18 cl11 pointer">
+
                                                     <fieldset class="rating">
-                                                        <input type="radio" id="star5" name="rating"
+                                                        <input type="radio" id="star5"  name="rating"
                                                             value="10" /><label class="full" for="star5"
                                                             title="Awesome - 5 stars"></label>
                                                         <input type="radio" id="star4half" name="rating"
@@ -263,8 +263,10 @@ h1 { font-size: 1.5em; margin: 10px; }
                                                             value="1" /><label class="half" for="starhalf"
                                                             title="Sucks big time - 0.5 stars"></label>
 
+
                                                     </fieldset>
-                                                </span>
+
+                                               
                                             </div>
 
                                             <div class="row p-b-25">
@@ -272,7 +274,7 @@ h1 { font-size: 1.5em; margin: 10px; }
                                                     <label class="stext-102 cl3" for="review">Your review</label>
                                                     <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"></textarea>
                                                 </div>
-                                                    
+
 
                                             </div>
 

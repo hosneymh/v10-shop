@@ -48,7 +48,6 @@ class SiteController extends Controller
             'rating' => 'required',
             'review' => 'required'
         ]);
-        dd($request->all() );
 
         Review::create([
             'star'=> $request->rating ,
