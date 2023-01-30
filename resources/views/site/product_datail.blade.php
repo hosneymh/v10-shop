@@ -6,52 +6,73 @@
 @extends('site.master')
 
 
-@section('title', 'homepage')
+@section('title', 'Product_Detail')
 
 @section('style')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+        @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 
-fieldset, label { margin: 0; padding: 0; }
+        fieldset,
+        label {
+            margin: 0;
+            padding: 0;
+        }
 
-h1 { font-size: 1.5em; margin: 10px; }
+        h1 {
+            font-size: 1.5em;
+            margin: 10px;
+        }
 
-/****** Style Star Rating Widget *****/
+        /****** Style Star Rating Widget *****/
 
-.rating {
-  border: none;
-  float: left;
-}
+        .rating {
+            border: none;
+            float: left;
+        }
 
-.rating > input { display: none; }
-.rating > label:before {
-  margin: 5px;
-  font-size: 1.25em;
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\f005";
-}
+        .rating>input {
+            display: none;
+        }
 
-.rating > .half:before {
-  content: "\f089";
-  position: absolute;
-}
+        .rating>label:before {
+            margin: 5px;
+            font-size: 1.25em;
+            font-family: FontAwesome;
+            display: inline-block;
+            content: "\f005";
+        }
 
-.rating > label {
-  color: #ddd;
- float: right;
-}
+        .rating>.half:before {
+            content: "\f089";
+            position: absolute;
+        }
 
-/***** CSS Magic to Highlight Stars on Hover *****/
+        .rating>label {
+            color: #ddd;
+            float: right;
+        }
 
-.rating > input:checked ~ label, /* show gold star when clicked */
-.rating:not(:checked) > label:hover, /* hover current star */
-.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+        /***** CSS Magic to Highlight Stars on Hover *****/
 
-.rating > input:checked + label:hover, /* hover current star when changing rating */
-.rating > input:checked ~ label:hover,
-.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating > input:checked ~ label:hover ~ label { color: #FFED85;  }
+        .rating>input:checked~label,
+        /* show gold star when clicked */
+        .rating:not(:checked)>label:hover,
+        /* hover current star */
+        .rating:not(:checked)>label:hover~label {
+            color: #FFD700;
+        }
+
+        /* hover previous stars in list */
+
+        .rating>input:checked+label:hover,
+        /* hover current star when changing rating */
+        .rating>input:checked~label:hover,
+        .rating>label:hover~input:checked~label,
+        /* lighten current selection */
+        .rating>input:checked~label:hover~label {
+            color: #FFED85;
+        }
     </style>
 @endsection
 @section('content')
@@ -91,10 +112,7 @@ h1 { font-size: 1.5em; margin: 10px; }
                                 <div class="item-slick3" data-thumb="{{ asset('uploads/' . $product->image) }}">
                                     <div class="wrap-pic-w pos-relative">
                                         <img src="{{ asset('uploads/' . $product->image) }}" alt="IMG-PRODUCT">
-                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                            href="{{ asset('siteassets/' . $product->image) }}">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
+                                        
                                     </div>
                                 </div>
 
@@ -111,6 +129,28 @@ h1 { font-size: 1.5em; margin: 10px; }
                             {{ $product->$name }}
                         </h4>
 
+                        <i>{{ round($product->reviews->avg('star') / 2 ,2) }}<i class="zmdi zmdi-star"></i> based on {{$product->reviews->count()}} Reviews</i>
+                        <br>
+                        @php $rating = round($product->reviews->avg('star') / 2 ,2); @endphp
+                        @if ($rating >2)
+                             @foreach(range(1,5) as $i)
+                                <span class="fa-stack" style="width:1em">
+                                    <i class="far fa-star fa-stack-1x"></i>
+
+                                    @if($rating >0)
+                                        @if($rating >0.5)
+                                            <i class="fas fa-star fa-stack-1x"></i>
+                                        @else
+                                            <i class="fas fa-star-half fa-stack-1x"></i>
+                                        @endif
+                                    @endif
+                                    @php $rating--; @endphp
+                                </span>
+                            @endforeach
+                        @endif
+
+                        <br>
+
                         <span class="mtext-106 cl2">
                             @if ($product->sale_price)
                                 <span
@@ -118,31 +158,42 @@ h1 { font-size: 1.5em; margin: 10px; }
                             @endif
                         </span>
 
-                        <p class="stext-102 cl3 p-t-23">
+                        <p class="stext-102 cl3 p-t-5">
                             {{ Str::words($product->$content, 50, '...') }}
                         </p>
 
 
-                        <div class="wrap-num-product flex-w m-r-20 m-tb-10">
-                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                <i class="fs-16 zmdi zmdi-minus"></i>
-                            </div>
+                        @auth
+                        <form action="{{route('site.add_to_cart')}}" method="POST">
+                            @csrf
+                            <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                    <i class="fs-16 zmdi zmdi-minus"></i>
+                                </div>
+                                <input type="hidden" name="product_id" value="{{$product->id}}">
+                                <input type="hidden" name="user_id" value="{{Auth::id()}}">
 
-                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product"
-                                value="1">
+                                <input class="mtext-104 cl3 txt-center num-product" type="number" name="num_product"
+                                    value="1">
 
-                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                <i class="fs-16 zmdi zmdi-plus"></i>
+                                <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                    <i class="fs-16 zmdi zmdi-plus"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex-w flex-r-m p-b-10 mt-5">
-                            <div class="size-204 flex-w flex-m respon6-next">
-                                <button
-                                    class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-                                    Add to cart
-                                </button>
+                            <div class="flex-w flex-r-m p-b-10 mt-5">
+                                <div class="size-204 flex-w flex-m respon6-next">
+                                    <button
+                                        class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                        Add to cart
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
+                        @else
+                        <p class="stext-102 cl3 p-t-5">
+                            You must <a href="{{route('login')}}"> Logged in</a> to add item in cart
+                        </p>
+                        @endauth
 
 
 
@@ -197,12 +248,7 @@ h1 { font-size: 1.5em; margin: 10px; }
                                                         <span class="mtext-107 cl2 p-r-20">
                                                             {{ $review->user->name }}
                                                         </span>
-
-                                                        <span class="fs-18 cl11">
-                                                            <i>{{ $review->star / 2 }}</i>
-                                                            <i class="zmdi zmdi-star"></i>
-
-                                                        </span>
+                                                        <i>{{ $review->star / 2 }}<i class="zmdi zmdi-star"></i></i>
                                                     </div>
 
                                                     <p class="stext-102 cl6">
@@ -213,26 +259,27 @@ h1 { font-size: 1.5em; margin: 10px; }
                                         @endforeach
 
 
-                                        <!-- Add review -->
-                                        <form action="{{ route('site.review', $product->id) }}" method="POST"
-                                            class="w-full">
-                                            @csrf
-                                            <h5 class="mtext-108 cl2 p-b-7">
-                                                Add a review
-                                            </h5>
+                                       @if (Auth::check())
+                                            <!-- Add review -->
+                                            <form action="{{ route('site.review', $product->id) }}" method="POST"
+                                                class="w-full">
+                                                @csrf
+                                                <h5 class="mtext-108 cl2 p-b-7">
+                                                    Add a review
+                                                </h5>
 
-                                            <p class="stext-102 cl6">
-                                                Your email address will not be published. Required fields are marked *
-                                            </p>
+                                                <p class="stext-102 cl6">
+                                                    Your email address will not be published. Required fields are marked *
+                                                </p>
 
-                                            <div class="flex-w flex-m p-t-50 p-b-23">
-                                                <span class="stext-102 cl3 m-r-16">
-                                                    Your Rating
-                                                </span>
+                                                <div class="flex-w flex-m p-t-50 p-b-23">
+                                                    <span class="stext-102 cl3 m-r-16">
+                                                        Your Rating
+                                                    </span>
 
 
                                                     <fieldset class="rating">
-                                                        <input type="radio" id="star5"  name="rating"
+                                                        <input type="radio" id="star5" name="rating"
                                                             value="10" /><label class="full" for="star5"
                                                             title="Awesome - 5 stars"></label>
                                                         <input type="radio" id="star4half" name="rating"
@@ -266,23 +313,27 @@ h1 { font-size: 1.5em; margin: 10px; }
 
                                                     </fieldset>
 
-                                               
-                                            </div>
 
-                                            <div class="row p-b-25">
-                                                <div class="col-12 p-b-5">
-                                                    <label class="stext-102 cl3" for="review">Your review</label>
-                                                    <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"></textarea>
                                                 </div>
 
+                                                <div class="row p-b-25">
+                                                    <div class="col-12 p-b-5">
+                                                        <label class="stext-102 cl3" for="review">Your review</label>
+                                                        <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"></textarea>
+                                                    </div>
 
-                                            </div>
 
-                                            <button
-                                                class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
-                                                Submit
-                                            </button>
-                                        </form>
+                                                </div>
+
+                                                <button
+                                                    class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
+                                                    Submit
+                                                </button>
+                                            </form>
+
+                                            @else
+                                            <h3>You must <a href="{{route('login')}}">login</a>!</h3>
+                                       @endif
                                     </div>
                                 </div>
                             </div>

@@ -6,7 +6,7 @@
 @extends('site.master')
 
 
-@section('title',"homepage")
+@section('title',"About Us")
 
 @section('content')
 

@@ -6,7 +6,7 @@
 @extends('site.master')
 
 
-@section('title',"homepage")
+@section('title',"Contact Us")
 
 @section('content')
 
@@ -71,7 +71,7 @@
 							</span>
 
 							<p class="stext-115 cl1 size-213 p-t-18">
-								+1 800 1236879
+                                +972569036690
 							</p>
 						</div>
 					</div>
@@ -87,7 +87,7 @@
 							</span>
 
 							<p class="stext-115 cl1 size-213 p-t-18">
-								contact@example.com
+								hosneymh2018@gmail.com
 							</p>
 						</div>
 					</div>

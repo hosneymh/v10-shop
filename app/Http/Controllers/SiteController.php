@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Product;
+use App\Models\Cart;
 use App\Models\Review;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,13 +15,13 @@ class SiteController extends Controller
     {
         $slider=Product::orderbydesc('id')->limit(3)->get();
         $categories = Category::orderbydesc('id')->get();
-        $all_product = Product::orderbydesc('id')->limit(9)->offset(3)->get();
+        $all_product = Product::orderbydesc('id')->limit(8)->offset(3)->get();
         return view('site.index',compact('slider','categories','all_product'));
     }
     public function shop()
     {
         $categories = Category::orderbydesc('id')->get();
-        $all_product = Product::orderbydesc('id')->paginate(4);
+        $all_product = Product::orderbydesc('id')->paginate(8);
 
 
         return view('site.product',compact('categories','all_product'));
@@ -29,7 +30,7 @@ class SiteController extends Controller
     public function product_detail($id)
     {
         $product = Product::find($id);
-        $all_product = Product::orderbydesc('id')->paginate(8);
+        $all_product = Product::orderbydesc('id')->where('id','!=',$id)->paginate(8);
         return view('site.product_datail',compact('product','all_product'));
 
     }
@@ -57,4 +58,6 @@ class SiteController extends Controller
         ]);
         return redirect()->back();
     }
+
+
 }

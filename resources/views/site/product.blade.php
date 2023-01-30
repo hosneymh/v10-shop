@@ -6,7 +6,7 @@
 @extends('site.master')
 
 
-@section('title',"homepage")
+@section('title',"Shop")
 
 @section('style')
 <style>
@@ -65,16 +65,14 @@
 
                 @foreach ($all_product as $item)
                 @php $real= str_replace(' ','',$item->category->$name);@endphp
-
+                <a href="{{route('site.product_detail',$item->id)}}">
                       <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item {{$real}}">
                             <!-- Block2 -->
                             <div class="block2">
                                 <div class="block2-pic hov-img0">
                                     <img  src="{{asset('uploads/'. $item->image)}}" alt="IMG-PRODUCT">
 
-                                    <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                        Quick View
-                                    </a>
+
                                 </div>
 
                                 <div class="block2-txt flex-w flex-t p-t-14">
@@ -99,6 +97,7 @@
                                 </div>
                             </div>
                         </div>
+                    </a>
                 @endforeach
 
 
