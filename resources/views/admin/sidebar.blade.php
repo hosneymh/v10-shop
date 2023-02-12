@@ -95,6 +95,22 @@
             <span>{{ __('admin.customers') }}</span></a>
     </li>
 
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapserole"
+            aria-expanded="true" aria-controls="collapserole">
+            <i class="fas fa-fw fa-shield-alt"></i>
+            <span>{{ __('admin.Roles') }}</span>
+        </a>
+        <div id="collapserole" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{route('admin.roles.index')}}">{{ __('admin.all_roles') }}</a>
+                <a class="collapse-item" href="{{route('admin.roles.create')}}">{{ __('admin.add_new') }}</a>
+            </div>
+        </div>
+    </li>
+
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

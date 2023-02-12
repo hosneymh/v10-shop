@@ -11,4 +11,6 @@ return [
     'payments' => 'Payments',
     'customers' => 'Customers',
     'logout' => 'Logout',
+    'Roles'=>'Roles',
+    'all_roles'=>'All Roles'
 ];
