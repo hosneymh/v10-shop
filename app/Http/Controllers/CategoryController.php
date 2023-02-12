@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -15,6 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        Gate::authorize('all_categories');
+
         $categories = Category::latest('id')->paginate(10);
         return view('admin.categories.index', compact('categories'));
     }
@@ -26,6 +29,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        Gate::authorize('add_category');
+
         $category = new Category();
         return view('admin.categories.create', compact('category'));
     }
@@ -79,6 +84,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+        Gate::authorize('edit_category');
+
         $category = Category::findorfail($id);
         return view('admin.categories.edit', compact('category'));
     }
@@ -129,6 +136,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        Gate::authorize('delete_category');
+
         $category = Category::findorfail($id);
         File::delete(public_path('uploads/'.$category->image));
         $category->delete();

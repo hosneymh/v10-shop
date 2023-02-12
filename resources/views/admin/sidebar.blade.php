@@ -32,7 +32,10 @@
         <div id="collapseCategory" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.categories.index') }}">{{ trans('admin.all_categories') }}</a>
+                @can('add_category')
                 <a class="collapse-item" href="{{ route('admin.categories.create') }}">{{ __('admin.add_new') }}</a>
+
+                @endcan
             </div>
         </div>
     </li>
